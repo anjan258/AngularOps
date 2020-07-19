@@ -1,0 +1,37 @@
+
+
+<!-- calling child component(display-employees.component.ts) from parent component
+so we need to create emp as @input() parameter in the child component that should match with [emp] 
+here basically we have seperated the logic of list of employees into seperate file-->
+<!-- <div class="panel panel-primary" *ngFor="let emp of employees">
+<app-display-employees [emp]="emp"></app-display-employees>
+</div> -->
+
+<!-- (alert) -- output paramter from child component (list-employees.component.ts) 
+and here wa handle the paramter sent by child component in seperate method
+$event -- is the payload received from child component-->
+<!-- This is done by using output parameters to pass the data from child to parent component.
+It can alse be done by template reference variable as follows  -->
+
+<h1 *ngIf="childEventData">  This is : {{ childEventData }}</h1> 
+<app-display-employees [emp]="empToDisplay" (alert)="handleNotify($event)" ></app-display-employees>
+
+
+<!-- Using template reference varaibles to pass data and methods from child to parent -->
+<!-- So here we createing a child component reference variable ( #childComponent )
+and accessing the child componenet variables (employee) and its properties and binding the value to the 
+h1 reference variable (#h1Variable) on div click -->
+
+<!-- to call methods using component reference variable use like - childComponent.methodname() -->
+
+<!-- uncommnet below code to try passing values from child to parent component
+using reference variables instead of output parameters -->
+
+<!-- <h1 #h1Variable></h1> 
+<div (click)="h1Variable.innerHTML = childComponent.employee.name + ' ' + childComponent.employee.email">
+<app-display-employees [emp]="empToDisplay" #childComponent ></app-display-employees>
+</div> -->
+
+
+<br>
+<button (click)="nextEmployee()" class="btn btn-sm btn-primary">Next Employee</button>

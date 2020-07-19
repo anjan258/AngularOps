@@ -1,0 +1,224 @@
+
+<!-- ngNativeValidate -- enables browser native validation which is not enabled by default  -->
+<!-- noValidate -- disables browser validation -->
+<!-- <form #employeeForm="ngForm" ngNativeValidate (ngSubmit)="saveEmployee(employeeForm)"> -->
+<!-- #employeeForm -- form reference variable -->
+<!-- #fullNameControl="ngModel -- reference variable for ngModel , so that we can access its properties during validation,
+like touced, untouched, pristine, dirty, valid and invalid
+for an example : fullNameControl.valid--tell us textfield has passed validation,
+and fullNameControl.touched -- tells if we tcouched or focussed on the textbox    -->
+
+<!--  (ngSubmit)="saveEmployee(employee)" -- passing employee model on button click to save the employee details
+to pass default from instead of model we use-  saveEmployee(employeeForm) -->
+
+<form #employeeForm="ngForm" (ngSubmit)="saveEmployee()"> 
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <h3 class="panel-title">Create Employee </h3>
+    </div>
+    <div class="panel-body">
+
+        <div class="form-group">
+            <label for="name">Full Name</label>
+            <!-- [class.is-invalid]="fullNameControl.invalid && fullNameControl.touched" -- chekcing to make sure that the textbox is touched
+            and its empty and then we highlight the textbox 
+            [class.d-none]="fullNameControl.valid || fullNameControl.untouched" or *ngIf="fullNameControl.invalid && fullNameControl.touched" -- makes sure
+            that we dont show the error message on page load, so on page load the field/form is valid and untouched 
+            employee.name -- binding employee model property-->
+
+            <input type="text" id="name" name="name" [(ngModel)]="employee.name" [class.is-invalid]="fullNameControl.invalid && fullNameControl.touched"
+             class="form-control"  #fullNameControl="ngModel" required> 
+            <span class="text-danger" *ngIf="fullNameControl.invalid && fullNameControl.touched" >Full Name is required</span>
+                                                                    <!-- or -->
+            <!-- <span class="text-danger" [class.d-none]="fullNameControl.valid || fullNameControl.untouched">Full Name is required</span> -->
+        </div>
+        <table>
+            <tr class="trStyle">
+                <td>Full Name - touched : {{ fullNameControl.touched }}</td><!-- likewise we can use other properties too-->
+                <td>Employee Form - touched : {{ employeeForm.touched }}</td> 
+            </tr>
+        </table>
+
+        <div class="form-group">
+            <label>Gender</label>
+            <div class="form-control">
+                <label class="radio-inline">
+                <input type="radio" value="male" name="gender" [(ngModel)]="employee.gender" required
+                          #genderControl="ngModel" [class.is-invalid]="genderControl.invalid && genderControl.touched"> Male
+            </label>
+            <label class="radio-inline">
+                <input type="radio" value="female" name="gender" [(ngModel)]="employee.gender" required
+                #genderControl="ngModel" [class.is-invalid]="genderControl.invalid && genderControl.touched"> Female
+            </label>
+            </div>
+            <span class="text-danger" *ngIf="genderControl.invalid && genderControl.touched" >Please select Gender</span>
+        </div>
+
+        <div class="form-group">
+            <div class="form-control">
+                <label class="checkbox-inline">
+                    <!-- [required]="employee.isActive==null" -- to make sure that the check is required only if employee.isActive is null
+                        if we want to make checkbox mandatory/required always then set the attribute as just -required   -->
+                <input type="checkbox"  name="isActive" [(ngModel)]="employee.isActive" #isActiveControl="ngModel" > Is Active
+            </label>
+            </div>
+            <!-- <span class="text-danger" *ngIf="isActiveControl.touched && isActiveControl.errors?.required">IsActive is required</span> -->
+        </div>
+
+        <div class="form-group">
+                <label class="checkbox-inline">Department</label>
+
+                <!-- while binding values to ddl, use [ngValue] as binding property to get the integer values of selected ddl value
+                if the value of the ddl is string the use [value] attribute
+                for example in our case,  { id: null, name: 'Select' }, we want to validate if ddl selected value is not default value
+                so, we used [ngValue] to get underlying int value of ddl selected option value
+                to get the selected id and value of ddl use [ngValue]="dept"  instead of [ngValue]='dept.id' --which returns only  selected id
+
+                value vs ngValue-- option value is tring then use value-property
+                else    if theoption is nullobject then user ngValue - property and if the selected option is not null/object
+                then    [ngValue]  will not work-->
+
+            <!-- <select id="department"  name="department"  [(ngModel)]="employee.department" class="form-control" required
+                    #deprtmentControl="ngModel" [class.is-invalid]="deprtmentControl.invalid && deprtmentControl.touched">
+                <option *ngFor="let dept of departments" [value]='dept.id'> {{ dept.name }}</option>
+            </select>
+            <span class="text-danger" *ngIf="deprtmentControl.invalid && deprtmentControl.touched">Department is required</span> -->
+
+            <!-- with custom validator -->
+            <!-- appSelectValidator -- name of our custom validator selector using as directive -->
+            <!-- no need to use required -- attribute for custom validator -->
+            <!-- appSelectValidator -- passes the value to our custom validator (SelectRequiredValidatorDirective)  for validation -->
+            <!-- appSelectValidator="-1"  is the default value of select list dropdown, so now it validates if user selects default option whose value is '-1' -->
+                <select id="department" appSelectValidator="-1"  name="department"  [(ngModel)]="employee.department" class="form-control" 
+                #deprtmentControl="ngModel" [class.is-invalid]="deprtmentControl.invalid && deprtmentControl.touched">
+                <option *ngFor="let dept of departments" [value]='dept.id'> {{ dept.name }}</option>
+                </select>
+                <!-- defaultSelected --- from our directive--indicates error when default value is selected -->
+                <!-- deprtmentControl.errors?.defaultSelected -- check if the department error collection has any value like
+                    defaultSelected which is returned from our custom validator when validation fails -->
+                <span class="text-danger" *ngIf="deprtmentControl.touched && deprtmentControl.errors?.defaultSelected">Department is required</span>
+        </div>
+
+        <!--bsDatepicker - for datepicker -->
+        <!--bsDaterangepicker - for date range picker -->
+        <!--[bsConfig]='datePickerConfig' -- binding the datapicker config from component-->
+        <!-- placement="right" -- places the calender to the right side -->
+          <div class="row">
+            <div class="form-group col-md-5">
+                <label>Date Of Birth</label>
+                <input type="text" bsDatepicker [bsConfig]='datePickerConfig' placement="right" 
+                id="dateOfBirth" name="dateOfBirth"  [(ngModel)]="employee.dateOfBirth"  class="form-control">  
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Contact Preference</label>
+            <div class="form-control">
+                <label class="radio-inline">
+                <input type="radio" value="email" name="contactPreference" [(ngModel)]="employee.contactPreference" required
+                    #contactControl="ngModel" [class.is-invalid]="contactControl.invalid && contactControl.touched" > Email
+            </label>
+            <label class="radio-inline">
+                <input type="radio" value="phone" name="contactPreference" [(ngModel)]="employee.contactPreference" required
+                #contactControl="ngModel" [class.is-invalid]="contactControl.invalid && contactControl.touched"  > Phone
+            </label>
+            </div>
+            <span class="text-danger" *ngIf="contactControl.invalid && contactControl.touched" >Please select Contact Preference</span>
+            <!-- to get the selected radio button value {{ contactControl.value  }} contactControl--reference variable of Contact Preference---->
+            <!-- Selected Contact Preference value : {{ contactControl.value  }} -->
+        </div>
+
+        <div class="form-group">
+            <label for="email">Email</label>
+            <!-- email -- email validator-->
+            <input type="text" id="email" name="email"  [(ngModel)]="employee.email"  class="form-control" required email
+            #emailControl="ngModel" [class.is-invalid]="emailControl.invalid && emailControl.touched">
+
+            <!--  as we are applying required and email patter validations,
+            we use emailControl.errors?.required and emailControl.errors?.email -- which checks if there are any errors for required
+            then it shows only required error message else invalid email error message. 
+            ? -- safe navigation operator-- as it checks/handles null and undefined values
+            we can also use "Pattern" matching for email like phonenumber instead of angular built in email
+            then the invalid error message should be checked like -- *ngIf="emailControl.errors?.pattern && emailControl.invalid && emailControl.touched" -->
+            <!-- emailControl.errors?.required -- checks to see if the email error collection has any errors and if that error is required -->
+
+        <span class="text-danger" *ngIf="emailControl.errors?.required && emailControl.invalid && emailControl.touched" >Email is required</span> 
+        <span class="text-danger" *ngIf="emailControl.errors?.email && emailControl.invalid && emailControl.touched" >Invalid Email</span> 
+        </div>
+        
+
+            <!--  to add required  field dynamically when we select Contact Preference -- radio button
+            we can add required as -- [required]="contactControl.value=='phoneNumber'" -- so when we chose Contact Preference  as phone,
+            we set the phone number as required , if not it doesnt validate phone number reuired validation.
+            likewise, if we set Contact Preference  to email, then email required property works as -- [required]="contactControl.value=='email'" 
+            so replace required attribute with  -- [required]="contactControl.value=='phoneNumber'" or  [required]="contactControl.value=='email'",
+             if thats the requirement and we should remove phoneControl.touched,emailControl.touched --touched properties -->
+
+        <div class="form-group">
+            <label>Phone</label>
+            <input type="text" id="phoneNumber" name="phoneNumber"  [(ngModel)]="employee.phoneNumber"  class="form-control" pattern="^\d{10}$"  required
+                            #phoneControl="ngModel" [class.is-invalid]="phoneControl.invalid && phoneControl.touched">
+
+            <span class="text-danger" *ngIf="phoneControl.errors?.required && phoneControl.invalid && phoneControl.touched" >Phone number is required</span>              
+             <span class="text-danger" *ngIf="phoneControl.errors?.pattern && phoneControl.invalid && phoneControl.touched" >Phone number must be 10 digits</span>
+        </div>
+        
+
+        <!-- grouped password and confirm password, so that custom validator can be applied on the group and 
+        will make sure both field values are always validated -->
+        <!-- ngModelGroup -- can be used only under ngForm directive -->
+        <div ngModelGroup="passwordGroup" appConfirmEqualValidator #passwordGroup="ngModelGroup"
+         [class.is-invalid]="passwordGroup.error?.notEqual  && !passwordGroup.error?.required">
+            <div class="form-group">
+                <label>Password</label>
+                <input type="text" id="password" name="password"  [(ngModel)]="employee.password"  class="form-control"  required
+                                #passwordControl="ngModel" [class.is-invalid]="passwordControl.invalid && passwordControl.touched">
+    
+                <span class="text-danger" *ngIf="passwordControl.errors?.required && passwordControl.touched" >Password is required</span>              
+            </div>
+    
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <!-- appConfirmEqualValidator="password" -- we are passing password field value here ro the custom directive (ConfirmEqualValidatorDirective)
+                so that the password and confirm password are validated for equality -->
+                <input type="text" id="confirmPassword"  name="confirmPassword"  [(ngModel)]="employee.confirmPassword"  class="form-control"  required
+                                #confirmPasswordControl="ngModel" [class.is-invalid]="confirmPasswordControl.invalid && confirmPasswordControl.touched" required>  
+    
+                <span class="text-danger" *ngIf="confirmPasswordControl.touched && confirmPasswordControl.errors?.required" >Confirm Password is required</span>  
+                <br>   
+                <span class="text-danger" *ngIf="confirmPasswordControl.touched
+                 && passwordGroup.errors?.notEqual && !confirmPasswordControl.error?.required">Password and  Confirm Password don't match</span>           
+            </div>
+        </div>
+
+          <div class="form-group">
+            <label>Photo Path</label>
+            <input type="photoPath" id="photoPath" name="photoPath"  [(ngModel)]="employee.photoPath"  class="form-control">
+        </div>
+
+
+        <button class="btn btn-primary" (click)="showHidePhotoPreview()" type="button">{{ previewPhoto ? "Hide" : "Show"}} Preview</button>
+
+        <div class="form-group">
+           <img [src]="employee.photoPath" height="200" width="200" *ngIf="previewPhoto" >
+        </div>
+        
+
+    </div>
+    <div class="panel-footer">
+        <!--  [disabled]="employeeForm.invalid"  -- disabled save button until the form is valid-->
+     <button class="btn btn-success" type="submit" [disabled]="employeeForm.invalid">Save</button>
+    </div>
+</div>
+
+</form>
+
+angular form : {{ employeeForm.value | json  }} <!--default form values-->
+
+<br/>
+<br/>
+
+employee form :{{ employee | json  }}  <!--employee model form values--> 
+
+<!-- by default, Angular 4 and later versions disable browser native validation.
+    novalidate -- this tag is assigned by default to the form which disables browsers native validation-->
