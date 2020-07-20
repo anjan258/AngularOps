@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { Employee } from '../models/employee.model';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-display-employees',
@@ -10,6 +11,7 @@ export class DisplayEmployeesComponent implements OnInit, OnChanges {
 
 
   @Input() emp: Employee;
+   selectedEmployeeId: number;
   // ouput paramter to pass data from child (current component) to parent componenet(list-employees.component.ts)
   // so here we trying to achieve wheneever someone click on the user profile,
   //  we will pass the emp name from child to parent component and display on parent template view
@@ -43,9 +45,12 @@ export class DisplayEmployeesComponent implements OnInit, OnChanges {
   currentEmployee: Employee;
   previousEmployee: Employee;
 
-  constructor() { }
+  constructor(private activeRoute: ActivatedRoute) { }
 
     ngOnInit(): void {
+      // reading params from url
+      this.selectedEmployeeId = + this.activeRoute.snapshot.paramMap.get('id');
+
   }
 
 

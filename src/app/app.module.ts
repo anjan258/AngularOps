@@ -14,19 +14,7 @@ import { AppComponent } from './app.component';
 import { ListEmployeesComponent } from './employees/list-employees.component';
 import { CreateEmployeeComponent } from './employees/create-employee.component';
 import { DisplayEmployeesComponent } from './employees/display-employees.component';
-
-
-const routes: Routes = [
-  { path: 'list', component: ListEmployeesComponent },
-
-  // setting the guard to create link, so that whenever we try we navigate from create link, we get confirm alert
-  // canDeactivate: [CreateEmployeeCanDeactivateGuardService] -- calls the guard service
-  {
-    path: 'create', component: CreateEmployeeComponent,
-    canDeactivate: [CreateEmployeeCanDeactivateGuardService]
-  },
-  { path: '', redirectTo: '/list', pathMatch: 'full' }
-];
+import { EmployeeDetailsComponent } from './employees/employee-details.component';
 
 @NgModule({
   declarations: [
@@ -35,15 +23,15 @@ const routes: Routes = [
     CreateEmployeeComponent,
     SelectRequiredValidatorDirective,
     ConfirmEqualValidatorDirective,
-    DisplayEmployeesComponent
+    DisplayEmployeesComponent,
+    EmployeeDetailsComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
     BrowserAnimationsModule,
-    BsDatepickerModule.forRoot(),
-    RouterModule.forRoot(routes)
+    BsDatepickerModule.forRoot()
   ],
   providers: [EmployeeService, CreateEmployeeCanDeactivateGuardService],
   bootstrap: [AppComponent]

@@ -15,27 +15,27 @@ export class EmployeeService {
         },
 
         {
-            id: 101, name: 'Test2', gender: 'Female', email: 'test2@test.com', contactPreference: 'Email',
+            id: 102, name: 'Test2', gender: 'Female', email: 'test2@test.com', contactPreference: 'Email',
             dateOfBirth: new Date('10/10/1984'), department: '2',
             isActive: false, photoPath: 'assets/images/user4.png'
         },
 
         {
-            id: 101, name: 'Test3', gender: 'Male', email: 'test3@test.com', contactPreference: 'Email',
+            id: 103, name: 'Test3', gender: 'Male', email: 'test3@test.com', contactPreference: 'Email',
             dateOfBirth: new Date('10/10/1970'), department: '3',
             isActive: true, photoPath: 'assets/images/user2.png'
         },
 
 
         {
-            id: 101, name: 'Test4', gender: 'Male', email: 'test4@test.com', contactPreference: 'Email',
+            id: 104, name: 'Test4', gender: 'Male', email: 'test4@test.com', contactPreference: 'Email',
             dateOfBirth: new Date('10/10/1995'), department: '4',
             isActive: false, photoPath: 'assets/images/user3.png'
         },
 
 
         {
-            id: 101, name: 'Test5', gender: 'Female', email: 'test5@test.com', contactPreference: 'Email',
+            id: 105, name: 'Test5', gender: 'Female', email: 'test5@test.com', contactPreference: 'Email',
             dateOfBirth: new Date('05/05/1990'), department: '1',
             isActive: true, photoPath: 'assets/images/user5.png'
         }
@@ -45,7 +45,11 @@ export class EmployeeService {
         return this.listEmployees;
     }
 
-    saveEmployee(newEmp): void{
+    getEmployeeById(empId: number): Employee {
+        return this.listEmployees.find(i => i.id === empId);
+    }
+
+    saveEmployee(newEmp): void {
         this.listEmployees.push(newEmp);
     }
 }

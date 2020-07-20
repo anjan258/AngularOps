@@ -3,9 +3,12 @@
 <!-- calling child component(display-employees.component.ts) from parent component
 so we need to create emp as @input() parameter in the child component that should match with [emp] 
 here basically we have seperated the logic of list of employees into seperate file-->
-<!-- <div class="panel panel-primary" *ngFor="let emp of employees">
-<app-display-employees [emp]="emp"></app-display-employees>
-</div> -->
+<div class="panel panel-primary" *ngFor="let emp of employees">
+    <div (click)="onClick(emp.id)" class="pointerClass"> 
+        <app-display-employees [emp]="emp"></app-display-employees>
+    </div>
+
+</div>
 
 <!-- (alert) -- output paramter from child component (list-employees.component.ts) 
 and here wa handle the paramter sent by child component in seperate method
@@ -13,8 +16,8 @@ $event -- is the payload received from child component-->
 <!-- This is done by using output parameters to pass the data from child to parent component.
 It can alse be done by template reference variable as follows  -->
 
-<h1 *ngIf="childEventData">  This is : {{ childEventData }}</h1> 
-<app-display-employees [emp]="empToDisplay" (alert)="handleNotify($event)" ></app-display-employees>
+<!-- <h1 *ngIf="childEventData">  This is : {{ childEventData }}</h1> 
+<app-display-employees [emp]="empToDisplay" (alert)="handleNotify($event)" ></app-display-employees> -->
 
 
 <!-- Using template reference varaibles to pass data and methods from child to parent -->
