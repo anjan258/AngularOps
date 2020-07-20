@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'list', component: ListEmployeesComponent },
 
   // setting the guard to create link, so that whenever we try we navigate from create link, we get confirm alert
-  // canDeactivate: [CreateEmployeeCanDeactivateGuardService] -- calls the guard service 
+  // canDeactivate: [CreateEmployeeCanDeactivateGuardService] -- calls the guard service
   {
     path: 'create', component: CreateEmployeeComponent,
     canDeactivate: [CreateEmployeeCanDeactivateGuardService]
