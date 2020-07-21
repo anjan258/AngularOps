@@ -13,6 +13,7 @@ export class ListEmployeesComponent implements OnInit {
   empToDisplay: Employee;
   private currentIndex = 1;
   childEventData: string;
+  searchText: string;
 
     // initializing the employee service in the constructor
     // which in the background, dependency injection happens

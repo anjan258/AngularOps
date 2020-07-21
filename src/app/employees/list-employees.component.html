@@ -1,9 +1,14 @@
 
+<div class="form-group">
+    <input type="text" class="form-control" placeholder="Search by name" width="300px" [(ngModel)]="searchText" />
+</div>
 
 <!-- calling child component(display-employees.component.ts) from parent component
 so we need to create emp as @input() parameter in the child component that should match with [emp] 
 here basically we have seperated the logic of list of employees into seperate file-->
-<div class="panel panel-primary" *ngFor="let emp of employees">
+<!-- employeeSearchFilter -- customer pipe filter  and  searchText-- search input-->
+
+<div class="panel panel-primary" *ngFor="let emp of employees | employeeSearchFilter:searchText">
     <div (click)="onClick(emp.id)" class="pointerClass"> 
         <app-display-employees [emp]="emp"></app-display-employees>
     </div>

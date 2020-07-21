@@ -3,8 +3,8 @@ import { NgForm } from '@angular/forms';
 import { Department } from '../models/department.model';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Employee } from '../models/employee.model';  // importing employee model class to bind to the template view
-import {  EmployeeService } from './employee.service'; // importing employee service
-import { Router  } from '@angular/router';
+import { EmployeeService } from './employee.service'; // importing employee service
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
@@ -31,22 +31,22 @@ export class CreateEmployeeComponent implements OnInit {
     { id: 4, name: 'Payroll' }
   ];
 
-employee: Employee = {
-  id : null,
-  name: null,
-  gender: null,
-  contactPreference: null,
-  phoneNumber: null,
-  email: null,
-  dateOfBirth: null,
-  department: '-1',
-  isActive: null,
-  photoPath: null,
-  password: null,
-  confirmPassword: null
-};
+  employee: Employee = {
+    id: null,
+    name: null,
+    gender: null,
+    contactPreference: null,
+    phoneNumber: null,
+    email: null,
+    dateOfBirth: null,
+    department: '-1',
+    isActive: null,
+    photoPath: null,
+    password: null,
+    confirmPassword: null
+  };
 
-previewPhoto = false;
+  previewPhoto = false;
 
   // commented because we are binding employee model to the view template
   // name: string;
@@ -67,10 +67,10 @@ previewPhoto = false;
     this.datePickerConfig = Object.assign({},
       {
         containerClass: 'theme-dark-blue',
-         showWeekNumbers: false,
-         minDate: new Date(2020, 0, 1), // set min date
-         maxDate: new Date(2020, 11, 31), // set max date
-         dateInputFormat: 'YYYY/MM/DD'
+        showWeekNumbers: false,
+        minDate: new Date(2020, 0, 1), // set min date
+        maxDate: new Date(2020, 11, 31), // set max date
+        dateInputFormat: 'YYYY/MM/DD'
       });
 
   }
@@ -84,13 +84,35 @@ previewPhoto = false;
   // }
 
   // to get the employee model values from template view
-    saveEmployee(): void{
+  saveEmployee(): void {
     // console.log(newEmp);
     // as the model is bind to the template view, we can directly pass model call to the save method
     // because the two-way data binding updates the model property values when the correspoding fields are filled on the form
-    this.empService.saveEmployee(this.employee);
+    // const empObj: Employee = Object.assign({}, this.employee) -- sinc we are resetting the form  (this.createEmployeeForm.reset())
+    // the values are reset even before its saved. So, we are assigning the employee model values ffrom template view to
+    // another  variable (const empObj) as Employee type. Hence the values are stored and persisted even after from reset.
+
+    const empObj: Employee = Object.assign({}, this.employee);
+    this.empService.saveEmployee(empObj);
+    this.createEmployeeForm.reset();
     this.router.navigate(['list']);
   }
+
+  // to reset the form from code, here we pass employeeform from view template and then reset
+  // saveEmployee(empForm: NgForm): void{
+  //   this.empService.saveEmployee(this.employee);
+  //   empForm.reset();
+  //   this.router.navigate(['list']);
+  // }
+
+  // or we can also reset by using this - createEmployeeForm - varaibale which get the
+  // employee reference variable
+  // this resets all the form properties like touched, untouched, pristine,dirty,etc
+  // saveEmployee(): void{
+  //   this.empService.saveEmployee(this.employee);
+  //   this.createEmployeeForm.reset();
+  //   this.router.navigate(['list']);
+  // }
 
   showHidePhotoPreview(): void {
     this.previewPhoto = !this.previewPhoto;

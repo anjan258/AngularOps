@@ -10,6 +10,9 @@ and fullNameControl.touched -- tells if we tcouched or focussed on the textbox  
 
 <!--  (ngSubmit)="saveEmployee(employee)" -- passing employee model on button click to save the employee details
 to pass default from instead of model we use-  saveEmployee(employeeForm) -->
+<!-- employeeForm.reset() -- to reset form  from view template , laso can be done from code, by passing
+employee from template reference variable-->
+<!-- <form #employeeForm="ngForm" (ngSubmit)="saveEmployee(); employeeForm.reset()">  -->
 
 <form #employeeForm="ngForm" (ngSubmit)="saveEmployee()"> 
 <div class="panel panel-primary">
