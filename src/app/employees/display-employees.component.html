@@ -4,7 +4,7 @@
   <!-- [class.panel-success]-- called as class binding (adding a class to an existing class)
   so when the condition is true it ass class to the div -->
 <div class="panel-heading colorDiv" [class.highlightDiv]="selectedEmployeeId===emp.id">
-    <h3 class="panel-title">{{ emp.name }}</h3> 
+    <h3 class="panel-title">{{ emp.name | uppercase}}</h3> 
   </div>
   <div class="panel-body">
     <div class="col-xs-10">
