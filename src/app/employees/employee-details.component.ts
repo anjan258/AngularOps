@@ -29,7 +29,7 @@ export class EmployeeDetailsComponent implements OnInit {
 
 
 // this the subscriber approach to read the values from the url
-/// the difference is when we want to see th en ext employee on the same , the id in the url changes
+/// the difference is when we want to see the next employee on the same , the id in the url changes
 // and the snapshot approach cant catch those dynamc changing values. so , we use this approach
 // paramMap -- introduced in Angular 4
 
@@ -41,14 +41,15 @@ export class EmployeeDetailsComponent implements OnInit {
     });
   }
 
+  //  {queryParamsHandling: 'preserve'  -- preserves the query string params if any in the url
   viewNextEmployee(): void {
       this.id = this.id + 1;
-      this.route.navigate(['/employees', this.id]);
+      this.route.navigate(['/employees', this.id] , {queryParamsHandling: 'preserve' });
   }
 }
 
 
-// snapshot vs observable  --- use snapshot when we the route param doesnt change
+// snapshot vs observable(subscribe)  --- use snapshot when we the route param doesnt change
 // and when we want to read only initial route param
 // on the other hand, use observable - when the route param changes and if you want to
 // react and execute some code in response to the change

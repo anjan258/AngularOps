@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Employee } from '../models/employee.model';
+import { Observable } from 'rxjs';
+import { of } from 'rxjs';  // operator of rxjs
+import { delay } from 'rxjs/operators';
+
 
 // its required if this service has injected dependent service
 // usualy we make service calls to API's then we inject HTTP service to get data from remote server
@@ -41,8 +45,11 @@ export class EmployeeService {
         }
     ];
 
-    getEmployees(): Employee[] {
-        return this.listEmployees;
+
+    //  Observable<Employee[]> -- because when we get fetch data from api over http
+    //  the result is returned as Observable and we us 'of' to retutn its type
+    getEmployees(): Observable<Employee[]> {
+        return of(this.listEmployees).pipe(delay(2000)); // to introduce delay while loading  data
     }
 
     getEmployeeById(empId: number): Employee {
