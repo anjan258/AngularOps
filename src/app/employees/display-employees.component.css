@@ -9,3 +9,8 @@
 .colorDiv{
     background-color:cadetblue;
 }
+
+button.btn
+{
+    width: 70px;
+}

@@ -18,8 +18,15 @@ const routes: Routes = [
 
   // setting the guard to create link, so that whenever we try we navigate from create link, we get confirm alert
   // canDeactivate: [CreateEmployeeCanDeactivateGuardService] -- calls the guard service
+
+  // trying to use same component for both create/ edit and so we use - { 'create/:id' , 'edit/:id' }
+  // so if id is zero then create if not show edit page with  emp details
   {
-    path: 'create', component: CreateEmployeeComponent,
+    path: 'create/:id', component: CreateEmployeeComponent,
+    canDeactivate: [CreateEmployeeCanDeactivateGuardService]
+  },
+  {
+    path: 'edit/:id', component: CreateEmployeeComponent,
     canDeactivate: [CreateEmployeeCanDeactivateGuardService]
   },
   // creating a route url with id parameter

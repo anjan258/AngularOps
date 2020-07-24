@@ -4,7 +4,7 @@ import { Department } from '../models/department.model';
 import { BsDatepickerConfig } from 'ngx-bootstrap/datepicker';
 import { Employee } from '../models/employee.model';  // importing employee model class to bind to the template view
 import { EmployeeService } from './employee.service'; // importing employee service
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-create-employee',
@@ -31,20 +31,7 @@ export class CreateEmployeeComponent implements OnInit {
     { id: 4, name: 'Payroll' }
   ];
 
-  employee: Employee = {
-    id: null,
-    name: null,
-    gender: null,
-    contactPreference: null,
-    phoneNumber: null,
-    email: null,
-    dateOfBirth: null,
-    department: '-1',
-    isActive: null,
-    photoPath: null,
-    password: null,
-    confirmPassword: null
-  };
+  employee: Employee;
 
   previewPhoto = false;
 
@@ -59,7 +46,7 @@ export class CreateEmployeeComponent implements OnInit {
   // dateOfBirth = new Date(2020, 0, 1); // setting default date
   // photoPath: string;
 
-  constructor(private empService: EmployeeService, private router: Router) {
+  constructor(private empService: EmployeeService, private router: Router, private activatedRoute: ActivatedRoute) {
     // Object.assign -- assigns the values from source to destination
     // in this case, as we want to change the theme of the datepicker, we have created the instace of BsDatepickerConfig
     // and assigning the property value of containerClass to required theme value
@@ -76,6 +63,47 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.activatedRoute.paramMap.subscribe(paramMap =>{
+
+      const empId = +paramMap.get('id');
+      this.getEmployeeById(empId);
+
+    });
+  }
+
+  // check if the id is passed from the url, if so, then display emp details
+  // else show new form to create employee
+  getEmployeeById(id: number): void{
+
+    if (id === 0)
+    {
+    this.employee = {
+  id: null,
+  name: null,
+  gender: null,
+  contactPreference: null,
+  phoneNumber: null,
+  email: null,
+  dateOfBirth: null,
+  department: '-1',
+  isActive: null,
+  photoPath: null,
+  password: null,
+  confirmPassword: null
+    };
+    this.createEmployeeForm.reset(); // reset form for new employee creation
+    }
+
+    else
+    {
+      // this.employee = this.empService.getEmployeeById(id) -- we cant use like this
+      // because it directly hold the reference of the employees and when a change made to employeein edit page
+      // even without saving it saves the value, so we need to copy to some other varaible aand asign back to the employees
+      // like as follows
+      this.employee = Object.assign({}, this.empService.getEmployeeById(id));
+    }
+
   }
 
   // to get the form values from template view

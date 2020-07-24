@@ -3,9 +3,9 @@
     <input type="text" class="form-control" placeholder="Search by name" width="300px" [(ngModel)]="searchText" />
 </div>
 
-<div class="form-group">
+<!-- <div class="form-group">
   <button (click)="changeEmpName()" class="btn btn-sm btn-primary">Change Employee Name</button>
-</div>
+</div> -->
 
 <!-- calling child component(display-employees.component.ts) from parent component
 so we need to create emp as @input() parameter in the child component that should match with [emp] 
@@ -21,9 +21,10 @@ here basically we have seperated the logic of list of employees into seperate fi
 
 
 <div class="panel panel-primary" *ngFor="let emp of filteredEmployees">
-    <div (click)="onClick(emp.id)" class="pointerClass"> 
-        <app-display-employees [emp]="emp"></app-display-employees>
-    </div>
+    <!-- <div (click)="onClick(emp.id)" class="pointerClass">  -->
+        <!-- [searchTerm]="searchText"> -- passing to child component ( display-employees.component.ts)  as Input param -->
+        <app-display-employees [emp]="emp" [searchTerm]="searchText"></app-display-employees>
+    <!-- </div> -->
 </div>
 
 <!-- (alert) -- output paramter from child component (list-employees.component.ts) 

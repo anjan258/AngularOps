@@ -3,6 +3,7 @@ import { Employee } from '../models/employee.model';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';  // operator of rxjs
 import { delay } from 'rxjs/operators';
+import { ThrowStmt } from '@angular/compiler';
 
 
 // its required if this service has injected dependent service
@@ -56,7 +57,24 @@ export class EmployeeService {
         return this.listEmployees.find(i => i.id === empId);
     }
 
+    // modified this method such that it will create a new employee if id=0
+    // else it will replace the employee matching with the existing emp id
+
     saveEmployee(newEmp): void {
-        this.listEmployees.push(newEmp);
+
+        // if its new employee, we need to find the last emp id and get next emp id
+        // so we use the following "reduce" -- function which loosp through list of all employees left to righ and gets the next empId
+        if (newEmp.id == null)
+        {
+            const newEmpId = this.listEmployees.reduce(function(e1, e2) { return (e1.id > e2.id) ? e1 : e2; }).id;
+            newEmp.id = newEmpId + 1;
+            this.listEmployees.push(newEmp);
+        }
+        else{
+
+            const existingEmpId = this.listEmployees.findIndex(e =>e.id === newEmp.id);
+            this.listEmployees[existingEmpId] = newEmp; /// if its existing employee, we find the emp id and update with new values
+
+        }
     }
 }

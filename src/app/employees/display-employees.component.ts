@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { Employee } from '../models/employee.model';
 import { ActivatedRoute } from '@angular/router';
+import { Router }  from '@angular/router';
 
 @Component({
   selector: 'app-display-employees',
@@ -11,6 +12,7 @@ export class DisplayEmployeesComponent implements OnInit, OnChanges {
 
 
   @Input() emp: Employee;
+  @Input() searchTerm: string; /// will be paased from parent component(list-employees.component.html)
    selectedEmployeeId: number;
   // ouput paramter to pass data from child (current component) to parent componenet(list-employees.component.ts)
   // so here we trying to achieve wheneever someone click on the user profile,
@@ -45,7 +47,7 @@ export class DisplayEmployeesComponent implements OnInit, OnChanges {
   currentEmployee: Employee;
   previousEmployee: Employee;
 
-  constructor(private activeRoute: ActivatedRoute) { }
+  constructor(private activeRoute: ActivatedRoute, private router: Router) { }
 
     ngOnInit(): void {
       // reading params from url
@@ -68,6 +70,18 @@ export class DisplayEmployeesComponent implements OnInit, OnChanges {
   // so, here we are emitting emp name which is passed from parent to this component in "emp" as input parameter
   notify(): void{
     this.alert.emit(this.emp.name);
+  }
+
+  viewEmployee(): void{
+
+    // searchText -- query param from url for seached item
+    // this.emp.id -- since we already have @Input() emp passed fro mparent component ( list-employees.component.ts )
+    // which has employee details, we can use here ro get emp id
+    this.router.navigate(['/employees', this.emp.id], { queryParams: { searchText: this.searchTerm } });
+  }
+
+  editEmployee(): void{
+    this.router.navigate(['/edit', this.emp.id]);
   }
 
 }
